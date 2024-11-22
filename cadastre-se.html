@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="css/cadastro.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Crie sua conta</h1>
+            <img src="assets/logoVentureu.png" alt="Logo" class="login-logo">
+            <hr>
+            <form onsubmit="handleRegister(event)">
+                <!-- Nome Completo -->
+                <div class="input-group">
+                    <input type="text" id="fullname" placeholder="Nome completo" required>
+                </div>
+                <!-- Email -->
+                <div class="input-group">
+                    <input type="email" id="register-email" placeholder="E-mail" required>
+                </div>
+                <!-- Senha -->
+                <div class="input-group">
+                    <input type="password" id="register-password" placeholder="Senha" required>
+                    <span class="show-password" onclick="togglePassword('register-password')"></span>
+                </div>
+                <!-- Confirmação de Senha -->
+                <div class="input-group">
+                    <input type="password" id="confirm-password" placeholder="Confirmar senha" required>
+                    <span class="show-password" onclick="togglePassword('confirm-password')"></span>
+                </div>
+                <button type="submit" class="btn-login">Cadastrar</button>
+            </form>
+            <p>Já tem uma conta? <a href="login.html">Entrar</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Alterna visibilidade do campo de senha
+        function togglePassword(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+        }
+
+        // Lógica de cadastro
+        function handleRegister(event) {
+            event.preventDefault();
+
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+
+            // Recuperar usuários do LocalStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Verificar se o e-mail já está cadastrado
+            const userExists = users.some(user => user.email === email);
+            if (userExists) {
+                alert('E-mail já cadastrado!');
+                return;
+            }
+
+            // Adicionar o novo usuário
+            users.push({ fullname, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Cadastro realizado com sucesso!');
+            // Redirecionar para o login
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

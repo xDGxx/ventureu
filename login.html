@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Entrar com sua conta</h1>
+            <img src="assets/logoVentureu.png" alt="Logo" class="login-logo">
+            <hr>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <input type="text" id="login-email" placeholder="E-mail ou nome de usuário" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" placeholder="Senha" required>
+                    <span class="show-password" onclick="togglePassword('login-password')"></span>
+                </div>
+                <button type="submit" class="btn-login">Entrar</button>
+            </form>
+            <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Alterna visibilidade do campo de senha
+        function togglePassword(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+        }
+
+        // Lógica de login
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Recuperar usuários do LocalStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Verificar se o usuário existe
+            const user = users.find(user => user.email === email && user.password === password);
+
+            if (user) {
+                alert('Login realizado com sucesso!');
+                // Redirecionar para a página principal
+                window.location.href = '/home.html';
+            } else {
+                alert('E-mail ou senha inválidos!');
+            }
+        }
+    </script>
+</body>
+
+</html>
